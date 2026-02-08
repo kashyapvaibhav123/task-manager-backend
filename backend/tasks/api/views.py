@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from tasks.infrastructure.repositories import TaskRepository
+from backend.tasks.infrastructure.repositories import TaskRepository
 from tasks.services.task_service import TaskService
 from tasks.domain.dtos import TaskCreateDTO, TaskUpdateDTO
 from .serializers import TaskSerializer
