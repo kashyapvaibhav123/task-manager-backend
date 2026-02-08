@@ -22,7 +22,6 @@ ALLOWED_HOSTS = os.getenv(
 # INSTALLED APPS
 # ======================
 INSTALLED_APPS = [
-    # Django core
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,13 +29,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # Third-party
     "rest_framework",
     "drf_spectacular",
 
-    # Local apps ✅ FIXED
-    "backend.tasks.apps.TasksConfig",
+    # ✅ THIS IS THE FIX
+    "backend.tasks",
 ]
+
 
 
 # ======================
