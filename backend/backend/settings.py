@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
 
     # Local apps
-    "backend.tasks",
+    "tasks",
 ]
 
 # ======================
@@ -86,10 +86,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "TaskManager",
-        "USER": "sa",
-        "PASSWORD": "Coalliance1S@fe",
-        "HOST": "localhost",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
         "PORT": "1433",
         "OPTIONS": {
             "driver": "ODBC Driver 18 for SQL Server",
@@ -97,6 +97,7 @@ DATABASES = {
         },
     }
 }
+
 
 # ======================
 # DJANGO REST FRAMEWORK
