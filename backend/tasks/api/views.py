@@ -6,8 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from backend.tasks.infrastructure.repositories import TaskRepository
-from tasks.services.task_service import TaskService
-from tasks.domain.dtos import TaskCreateDTO, TaskUpdateDTO
+from backend.tasks.services.task_service import TaskService
+from backend.tasks.domain.dtos import TaskCreateDTO, TaskUpdateDTO
 from .serializers import TaskSerializer
 
 
@@ -23,7 +23,10 @@ class TaskListCreateAPI(APIView):
     def get(self, request):
         service = get_task_service()
         tasks = service.list_tasks()
-        return Response(TaskSerializer(tasks, many=True).data)
+        return Response(
+            TaskSerializer(tasks, many=True).data,
+            status=status.HTTP_200_OK
+        )
 
     def post(self, request):
         data = request.data
@@ -62,7 +65,10 @@ class TaskUpdateDeleteAPI(APIView):
         service = get_task_service()
         task = service.update_task(task_id, dto)
 
-        return Response(TaskSerializer(task).data)
+        return Response(
+            TaskSerializer(task).data,
+            status=status.HTTP_200_OK
+        )
 
     def delete(self, request, task_id):
         service = get_task_service()
