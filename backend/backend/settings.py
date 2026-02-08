@@ -34,9 +34,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
 
-    # Local apps
-    "tasks",
+    # Local apps ✅ FIXED
+    "backend.tasks.apps.TasksConfig",
 ]
+
 
 # ======================
 # MIDDLEWARE
@@ -54,7 +55,7 @@ MIDDLEWARE = [
 # ======================
 # URL CONFIG
 # ======================
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "backend.backend.urls"
 
 # ======================
 # TEMPLATES
@@ -78,7 +79,7 @@ TEMPLATES = [
 # ======================
 # WSGI
 # ======================
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "backend.backend.wsgi.application"
 
 # ======================
 # DATABASE (SQL SERVER)
