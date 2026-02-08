@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
 
     # Local apps
-    "tasks",
+    "backend.tasks",
 ]
 
 # ======================
