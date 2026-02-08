@@ -1,3 +1,3 @@
-from tasks.domain.models import Task
+from backend.tasks.domain.models import Task
 
 # Create your models here.
