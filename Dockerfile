@@ -26,11 +26,22 @@ RUN apt-get update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql18 \
     && rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /app
 
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy project files
 COPY . .
 
-CMD ["gunicorn", "backend.backend.wsgi:application", "--bind", "0.0.0.0:10000"]
+# Expose the port (optional, Render uses $PORT)
+EXPOSE 10000
+
+# Run Gunicorn with Render-friendly settings
+CMD ["gunicorn", "backend.backend.wsgi:application", \
+    "--bind", "0.0.0.0:$PORT", \
+    "--workers", "1", \
+    "--threads", "2", \
+    "--timeout", "120"]
