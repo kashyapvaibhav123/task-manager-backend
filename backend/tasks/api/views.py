@@ -1,3 +1,4 @@
+import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -84,7 +85,7 @@ class TaskStatsAPI(APIView):
         stats = {
             "total": len(tasks),
             "todo": sum(1 for t in tasks if t.status == "todo"),
-            "inProgress": sum(1 for t in tasks if t.status == "inProgress"),
+            "inProgress": sum(1 for t in tasks if t.status == "in-progress"),
             "completed": sum(1 for t in tasks if t.status == "completed"),
             "byPriority": {
                 "low": sum(1 for t in tasks if t.priority == "low"),
@@ -93,3 +94,32 @@ class TaskStatsAPI(APIView):
             },
         }
         return Response(stats, status=status.HTTP_200_OK)
+@method_decorator(csrf_exempt, name="dispatch")
+class WeatherAPI(APIView):
+    """
+    Fetch current weather for a city (default: Delhi)
+    Uses Open-Meteo API
+    """
+    def get(self, request):
+        city = request.query_params.get("city", "Delhi")  # ✅ Default is Delhi
+        
+        # Coordinates for cities
+        city_coords = {
+            "Delhi": (28.6139, 77.2090),
+            "London": (51.5074, -0.1278),
+            "New York": (40.7128, -74.0060),
+        }
+
+        lat, lon = city_coords.get(city, city_coords["Delhi"])  # fallback to Delhi
+
+        try:
+            url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            return Response(data, status=status.HTTP_200_OK)
+        except requests.RequestException as e:
+            return Response(
+                {"error": "Failed to fetch weather", "details": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
