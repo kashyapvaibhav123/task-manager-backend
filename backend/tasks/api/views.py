@@ -75,3 +75,21 @@ class TaskUpdateDeleteAPI(APIView):
         service = get_task_service()
         service.delete_task(task_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
+@method_decorator(csrf_exempt, name="dispatch")
+class TaskStatsAPI(APIView):
+    def get(self, request):
+        service = get_task_service()
+        tasks = service.list_tasks()
+
+        stats = {
+            "total": len(tasks),
+            "todo": sum(1 for t in tasks if t.status == "todo"),
+            "inProgress": sum(1 for t in tasks if t.status == "inProgress"),
+            "completed": sum(1 for t in tasks if t.status == "completed"),
+            "byPriority": {
+                "low": sum(1 for t in tasks if t.priority == "low"),
+                "medium": sum(1 for t in tasks if t.priority == "medium"),
+                "high": sum(1 for t in tasks if t.priority == "high"),
+            },
+        }
+        return Response(stats, status=status.HTTP_200_OK)
