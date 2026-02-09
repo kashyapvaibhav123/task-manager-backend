@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     unixodbc-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Add Microsoft signing key (modern way)
+# Add Microsoft signing key
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
     | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg
@@ -36,12 +36,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# Expose the port (optional, Render uses $PORT)
+# Expose port (optional)
 EXPOSE 10000
 
-# Run Gunicorn with Render-friendly settings
-CMD ["gunicorn", "backend.backend.wsgi:application", \
-    "--bind", "0.0.0.0:$PORT", \
-    "--workers", "1", \
-    "--threads", "2", \
-    "--timeout", "120"]
+# Run Gunicorn with Render-friendly settings using shell form
+CMD gunicorn backend.backend.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120
