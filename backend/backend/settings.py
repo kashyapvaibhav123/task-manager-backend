@@ -15,10 +15,11 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = [
-    "task-manager-backend-3use.onrender.com",  # your Render app URL
-    "127.0.0.1",  # optional for local testing
-    "localhost",  # optional for local testing
+    'localhost',
+    '127.0.0.1',
+    'task-manager-backend-2fx2.onrender.com', 
 ]
+
 
 
 # ======================
