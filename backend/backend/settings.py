@@ -87,18 +87,16 @@ WSGI_APPLICATION = "backend.backend.wsgi.application"
 # ======================
 DATABASES = {
     "default": {
-        "ENGINE": "mssql",
+        "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.postgresql"),
         "NAME": os.getenv("DB_NAME"),
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
-        "PORT": "1433",
-        "OPTIONS": {
-            "driver": "ODBC Driver 18 for SQL Server",
-            "extra_params": "TrustServerCertificate=yes;",
-        },
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
+
+
 
 
 # ======================
