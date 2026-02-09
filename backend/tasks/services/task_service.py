@@ -1,5 +1,4 @@
 class TaskService:
-
     def __init__(self, repo):
         self.repo = repo
 
@@ -16,3 +15,9 @@ class TaskService:
 
     def delete_task(self, task_id):
         self.repo.delete(task_id)
+
+    def get_task(self, task_id: int):
+        try:
+            return self.repo.get_by_id(task_id)
+        except self.repo.model.DoesNotExist:
+            return None

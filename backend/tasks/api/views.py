@@ -52,23 +52,24 @@ class TaskUpdateDeleteAPI(APIView):
     parser_classes = [JSONParser]
     serializer_class = TaskSerializer
 
+    def get(self, request, task_id):
+        service = get_task_service()
+        task = service.get_task(task_id)  # You need this method in your service
+        if not task:
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
+
     def put(self, request, task_id):
         data = request.data
-
         dto = TaskUpdateDTO(
             title=data.get("title"),
             description=data.get("description"),
             status=data.get("status"),
             priority=data.get("priority"),
         )
-
         service = get_task_service()
         task = service.update_task(task_id, dto)
-
-        return Response(
-            TaskSerializer(task).data,
-            status=status.HTTP_200_OK
-        )
+        return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
 
     def delete(self, request, task_id):
         service = get_task_service()

@@ -1,4 +1,5 @@
 from backend.tasks.models import Task
+from django.core.exceptions import ObjectDoesNotExist
 
 class TaskRepository:
 
@@ -30,3 +31,10 @@ class TaskRepository:
 
     def delete(self, task_id):
         Task.objects.filter(id=task_id).delete()
+
+    # ✅ NEW: get_by_id
+    def get_by_id(self, task_id):
+        try:
+            return Task.objects.get(id=task_id)
+        except ObjectDoesNotExist:
+            return None
